@@ -5,12 +5,22 @@ import bodyParser from 'body-parser';
 const app = express();
 import cors from 'cors';
 
+import { User } from './models';
+
 require('dotenv').config()
 
 // middleware
 
 app.use(express.json()); //req.body
 app.use(cors());
+
+// User.sequelize.sync({ force: true })
+//     .then(() => {
+//         console.log('DB connection esatblished !');
+//     })
+//     .catch((err) => {
+//         console.log('Error : ' + err);
+//     });
 
 // Import Route of whole project route 
 import users from './routes/user';

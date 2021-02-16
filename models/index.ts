@@ -1,10 +1,8 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import UserModel from './User';
+import config from '../config/config.json';
+
 const env = process.env.NODE_ENV || 'development';
-
-const config = require(__dirname + '/../config/config.json')[env];
-//import config from '../config/config.json';
-
 let sequelize;
 if (config[env].use_env_variable) {
   sequelize = new Sequelize(
@@ -29,7 +27,6 @@ const db: any = {
 db.User.associate(db);
 const {
   User,
-
 } = db;
 
 export {
