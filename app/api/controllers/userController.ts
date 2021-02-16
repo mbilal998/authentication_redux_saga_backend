@@ -1,11 +1,12 @@
 import { any } from "sequelize/types/lib/operators";
-import User from '../../../models';
+import { User } from '../../../models';
 
 export const register = async (req: any, res: any) => {
     try {
+        console.log("I am here");
         //console.log(User);
 
-        console.log(req.body);
+        //console.log(req.body);
 
         // //TODO: Check if user exist (if user exist then throw error)
 
