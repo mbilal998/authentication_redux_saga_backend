@@ -35,7 +35,7 @@ export const register = async (req: any, res: any) => {
         //TODO: Generating our jwt token
         const token = jwtGenerator(newuser.dataValues['id']);
 
-        res.json({ token: token });
+        res.json({ token: token, data: newuser.dataValues });
 
     } catch (e) {
         res.json({ message: e.message });
@@ -69,6 +69,16 @@ export const login = async (req: any, res: any) => {
         res.json({ token: token });
 
     } catch (e) {
-
+        res.json({ message: e.message });
     }
+}
+
+export const is_verify = async (req: any, res: any) => {
+    try {
+        console.log("I am Here");
+        res.json(true);
+    } catch (e) {
+        res.json({ message: e.message });
+    }
+
 }
