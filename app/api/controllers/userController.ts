@@ -1,6 +1,6 @@
-import { any } from "sequelize/types/lib/operators";
 import { User } from '../../../models';
 import bcrypt from 'bcrypt';
+import jwtGenerator from '../../../utils/jwtGenerator';
 
 export const register = async (req: any, res: any) => {
     try {
@@ -31,12 +31,44 @@ export const register = async (req: any, res: any) => {
             'designation': req.body.designation
         }
         const newuser = await User.create(data);
-        res.json(newuser.dataValues);
 
         //TODO: Generating our jwt token
+        const token = jwtGenerator(newuser.dataValues['id']);
 
-    } catch {
+        res.json({ token: token });
+
+    } catch (e) {
+        res.json({ message: e.message });
+    }
+}
+
+export const login = async (req: any, res: any) => {
+    try {
+        // TODO: Check if user does not exit (if not then we throw error)
+        const user = await User.findOne({
+            where: {
+                email: req.body.email,
+            }
+        });
+
+        if (!user) {
+            return res.status(401).send("Password or Email is Incorrect");
+        }
+
+        // TODO: Check if incomming password is the same with database password
+        const validPassword = await bcrypt.compare(req.body.password, user.password)
+
+        if (!validPassword) {
+
+            return res.status(401).send("Password or Email is Incorrect");
+        }
+
+        // TODO: Given them jwt token
+        const token = jwtGenerator(user.id);
+
+        res.json({ token: token });
+
+    } catch (e) {
 
     }
-    res.json({ status: 1 });
 }
